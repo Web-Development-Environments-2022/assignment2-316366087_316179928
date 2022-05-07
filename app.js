@@ -1,5 +1,5 @@
 var context;
-var shape = new Object();
+var shape = new Object(); //pacment location - shape.i, shape.j
 var board;
 var score;
 var pac_color;
@@ -36,14 +36,14 @@ function Start() {
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
 					food_remain--;
-					board[i][j] = 1;
+					board[i][j] = 1; //food
 				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
-					board[i][j] = 2;
+					board[i][j] = 2; //pacman
 				} else {
-					board[i][j] = 0;
+					board[i][j] = 0; //empty
 				}
 				cnt--;
 			}
@@ -84,16 +84,16 @@ function findRandomEmptyCell(board) {
 
 function GetKeyPressed() {
 	if (keysDown[38]) {
-		return 1;
+		return 1; //up
 	}
 	if (keysDown[40]) {
-		return 2;
+		return 2; //down
 	}
 	if (keysDown[37]) {
-		return 3;
+		return 3; //left
 	}
 	if (keysDown[39]) {
-		return 4;
+		return 4; //right
 	}
 }
 
@@ -106,22 +106,22 @@ function Draw() {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
-			if (board[i][j] == 2) {
+			if (board[i][j] == 2) { // pacmen
 				context.beginPath();
 				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
 				context.lineTo(center.x, center.y);
 				context.fillStyle = pac_color; //color
-				context.fill();
+				context.fill(); //pacmen body
 				context.beginPath();
 				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
-				context.fill();
-			} else if (board[i][j] == 1) {
+				context.fill(); //pacmen eye
+			} else if (board[i][j] == 1) { //food
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
-			} else if (board[i][j] == 4) {
+			} else if (board[i][j] == 4) { //wall
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
@@ -134,22 +134,22 @@ function Draw() {
 function UpdatePosition() {
 	board[shape.i][shape.j] = 0;
 	var x = GetKeyPressed();
-	if (x == 1) {
+	if (x == 1) { //up
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
 			shape.j--;
 		}
 	}
-	if (x == 2) {
+	if (x == 2) { //down
 		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
 			shape.j++;
 		}
 	}
-	if (x == 3) {
+	if (x == 3) {//left
 		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
 			shape.i--;
 		}
 	}
-	if (x == 4) {
+	if (x == 4) {//right
 		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
 			shape.i++;
 		}
