@@ -9,8 +9,22 @@ var interval;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-	Start();
+	hideElements();
 });
+
+function hideElements(){
+	loginPage.style.display = "none";
+	gameScreen.style.display = "none";
+}
+
+function goToRegistrationScreen(){
+	//noneee
+}
+
+function goToSignInScreen(){
+	welcome.style.display = "none";
+	loginPage.style.display = "block";
+}
 
 function Start() {
 	board = new Array();
