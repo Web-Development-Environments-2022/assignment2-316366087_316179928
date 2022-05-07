@@ -6,8 +6,10 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var users;
 
 $(document).ready(function() {
+	users = {"k":"k"}
 	context = canvas.getContext("2d");
 	hideElements();
 });
@@ -15,10 +17,26 @@ $(document).ready(function() {
 function hideElements(){
 	loginPage.style.display = "none";
 	gameScreen.style.display = "none";
+	settingsPage.style.display = "none";
 }
 
 function goToRegistrationScreen(){
 	//noneee
+}
+
+function generateRandomSettings(){
+	///sdfasdf
+}
+
+function authenticate(user,pass){
+	if (user.value in users){
+		if (users[user.value] == pass.value){
+			gameScreen.style.display = "block";
+			loginPage.style.display = "none";
+			Start();
+		}
+	}
+
 }
 
 function goToSignInScreen(){

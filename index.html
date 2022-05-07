@@ -3,6 +3,8 @@
 	<head>
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
+		<!-- <script src="https://jqueryvalidation.org/files/lib/jquery-1.11.1.js"></script> -->
+		<!-- <script src="../dist/jquery.validate.js"></script> -->
 	</head>
 
 	<body>
@@ -14,12 +16,70 @@
 		<div id="loginPage">
 			<label for="userName">Please Enter User Name:</label>
 			<br>
-			<input name="userName" id="userName" cols="30" rows="10"></input>
+			<input name="userName" id="userNameLogin" cols="30" rows="10"></input>
 			<br>
 			<label for="password">Please Enter Password:</label>
 			<br>
-			<input type="password" name="password" id="password" cols="30" rows="10"></input>
+			<input type="password" name="password" id="passwordLogin" cols="30" rows="10"></input>
+			<br>
+			<button onclick="authenticate(userNameLogin,passwordLogin)">Log-in</button>
 		</div>
+
+		<div id="settingsPage">
+			<form id="settingForm" action="">
+				
+				<label for="">Please Enter Number Of Balls</label>
+				<br>
+				<input id="ballNumbers" type="text">
+				<br>
+				<label for="">Please Enter Balls Color</label>
+				<br>
+				<input id="ballColor" type="text">
+				<br>
+				<label for="">Please Enter Game Time</label>
+				<br>
+				<input id="ballColor" type="text">
+				<br>
+				<label for="">Please Enter Number Of Monsters</label>
+				<br>
+				<input type="radio" id="1Monster" name="monsterPicker" value="1">
+				<label for="1Monster">1</label>
+				<br>
+				<input type="radio" id="2Monster" name="monsterPicker" value="2">
+				<label for="2Monster">2</label>
+				<br>
+				<input type="radio" id="3Monster" name="monsterPicker" value="3">
+				<label for="3Monster">3</label>
+				<br>
+				<input type="radio" id="4Monster" name="monsterPicker" value="4">
+				<label for="4Monster">4</label>
+				<br>
+				<button onclick="generateRandomSettings()">Random Settings</button>
+
+				
+			</form>
+		</div>
+		<!-- <script>
+			$("#settingForm").validate({
+				rules: {
+					name: {
+					required: true,
+					minlength: 2
+					}
+			},
+			messages: {
+				name: {
+				required: "We need your email address to contact you",
+				minlength: jQuery.validator.format("At least {0} characters required!")
+				}
+			}
+			});
+			jQuery.validator.addMethod("ballNumbers", function(value, element) {
+			// allow any non-whitespace characters as the host part
+			return this.optional( element ) || /^[0-9]+$/i.test( value );
+			}, 'Please enter a valid email address.');
+			
+		</script> -->
 		<div id="gameScreen">
 			<div id="score">
 				<label for="lblScore">SCORE:</label>
