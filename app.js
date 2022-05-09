@@ -17,9 +17,16 @@ var fifteenPointsColor;
 var twenyFivePointsColor;
 var food_remain;
 var keyMap;
+var upArrow = 38;
+var downArrow = 40;
+var leftArrow = 37;
+var rightArrow = 39;
+var gameTime;
+
+
 
 $(document).ready(function() {
-    keyMap = {};
+    keyMap = {"up":38,"down":40,"left":37,"right":39};
 	users = {"k":"k"}
 	context = canvas.getContext("2d");
 	hideElements();
@@ -36,9 +43,6 @@ function goToRegistrationScreen(){
 	//noneee
 }
 
-function generateRandomSettings(){
-	///sdfasdf
-}
 
 function authenticate(user,pass){
 	if (user.value in users){
@@ -213,19 +217,19 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-	if (keysDown[38]) {
+	if (keysDown[upArrow]) {
 		packmanFace = 1.5;
 		return 1; //up
 	}
-	if (keysDown[40]) {
+	if (keysDown[downArrow]) {
 		packmanFace = 0.5;
 		return 2; //down
 	}
-	if (keysDown[37]) {
+	if (keysDown[leftArrow]) {
 		packmanFace = 1;
 		return 3; //left
 	}
-	if (keysDown[39]) {
+	if (keysDown[rightArrow]) {
 		packmanFace = 0;
 		return 4; //right
 	}

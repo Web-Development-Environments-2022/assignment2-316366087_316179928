@@ -29,7 +29,7 @@
 		</div>
 
 		<div id="settingsPage">
-			<form id="settingForm" action="" autocomplete="off">
+			<form id="settingForm" autocomplete="off" onsubmit="submitSettingsForm();return false;">
 				<button onclick="settingsGameKeyUp()">Choose Game Up Key: </button>
                 <label id="showUpKey"></label>
                 <br>
@@ -60,15 +60,14 @@
 				<br>
 				<label for="gameTime">Please Enter Game Time</label>
                 <br>
-                <input id="gameTime" name="gameTime" type="text">
+                <input id="gameTimeFromSettings" name="gameTimeFromSettings" type="text">
 				<br>
 				<label for="monsterPicker">Please Enter Number Of Monsters, between 1 and 4:</label>
 				<br>
 				<input type="text" id="monsterPicker" name="monsterPicker">
 				<br>
-				<button onclick="generateRandomSettings()">Random Settings</button>
-                <input type="submit" value="Submit">
-
+				<button onclick="generateRandomSettings();return false">Random Settings</button>
+                <input type="submit" value="Submit" >
 				
 			</form>
 		</div>
