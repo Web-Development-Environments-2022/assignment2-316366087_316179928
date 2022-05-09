@@ -10,9 +10,16 @@ $(document).ready(function() {
         return this.optional( element ) || /^[a-zA-Z0-9]+$/i.test( value );
     }, "Letters, numbers only please" );
 
+    jQuery.validator.addMethod( "freeUserName", function( value, element ) {
+        return this.optional( element ) || !(value in users);
+    }, "Username is taken already" );
+
     $("#registrationForm").validate({
         rules: {
-            registrationUsername: "required",
+            registrationUsername: {
+                required: true,
+                freeUserName: true
+            },
             registrationPassword: {
                 required: true,
                 minlength: 6,
@@ -29,7 +36,10 @@ $(document).ready(function() {
             registrationBirthDate: "required"
         },
         messages: {
-            registrationUsername: "Please enter your username",
+            registrationUsername:  {
+                required: "Please enter your username",
+                freeUserName: "This username is already in user."
+            },
             registrationPassword: {
                 required: "Please enter your password",
                 minlength: "Your password should be at least 6 characters long",
@@ -47,3 +57,10 @@ $(document).ready(function() {
         }
     });
 });
+
+function submitRegistrationForm() {
+    if ($("#registrationForm").valid()) {
+        users[document.getElementById("registrationUsername").value]=document.getElementById("registrationPassword").value
+        document.getElementById("registrationForm").reset();
+    }
+}
