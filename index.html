@@ -9,14 +9,19 @@
         <script type="text/javascript" src="registrationValidate.js"></script>
         <script type="text/javascript" src="settingsBackend.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 	</head>
 
 	<body>
+        <div id="aboutModal" class="modal">
+            <p>Thanks for clicking. That felt good.</p>
+        </div>      
         <div id="menu">
             <li><a onclick="showOneScreen('welcome')" class="navBar">Welcome</a></li>
            <li><a onclick="showOneScreen('registrationScreen')" class="navBar">Register</a></li>
            <li><a onclick="showOneScreen('loginPage')" class="navBar">Login</a></li>
-           <li><a onclick="showOneScreen('play')" class="navBar">About</a></li>
+           <li><a href="#aboutModal" rel="modal:open" class="navBar">About</a></li>
            <li><a onclick="showOneScreen('settingsPage')" class="navBar">Play</a></li>
            
          </div>
