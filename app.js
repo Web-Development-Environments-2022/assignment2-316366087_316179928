@@ -11,19 +11,25 @@ var packmanFace;
 var numberOfMonsters;
 var monsters;
 var monstersBoard;
+var stikes;
+var fivePointsColor;
+var fifteenPointsColor;
+var twenyFivePointsColor;
+var food_remain;
+var keyMap;
 
 $(document).ready(function() {
+    keyMap = {};
 	users = {"k":"k"}
 	context = canvas.getContext("2d");
 	hideElements();
 	welcome.style.display = "none";
-	Start();
 });
 
 function hideElements(){
 	loginPage.style.display = "none";
-	// gameScreen.style.display = "none";
-	settingsPage.style.display = "none";
+	gameScreen.style.display = "none";
+	// settingsPage.style.display = "none";
 }
 
 function goToRegistrationScreen(){
@@ -51,7 +57,11 @@ function goToSignInScreen(){
 }
 
 function Start() {
-	numberOfMonsters = 4; /// need to get element from settings
+    fivePointsColor = "black";
+    fifteenPointsColor = "blue";
+    twenyFivePointsColor = "red";
+    strikes = 5;
+	numberOfMonsters = 3; /// need to get element from settings
 	monsters = new Array();
 	monstersBoard = new Array();
 	addMonsters();
@@ -60,7 +70,10 @@ function Start() {
 	score = 0;
 	pac_color = "yellow";
 	var cnt = 100;
-	var food_remain = 50;
+	food_remain = 50;
+    var balls5points = Math.floor(0.6*food_remain);
+    var balls15points = Math.floor(0.3*food_remain);
+    var balls25points = Math.floor(0.1*food_remain);
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
@@ -77,10 +90,21 @@ function Start() {
 				board[i][j] = 4;
 			} else {
 				var randomNum = Math.random();
-				if (randomNum <= (1.0 * food_remain) / cnt) {
+				if (randomNum <= (1.0 * balls5points) / cnt) {
 					food_remain--;
-					board[i][j] = 1; //food
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+                    balls5points--;
+					board[i][j] = 5; //food
+				} else if (randomNum <= (1.0 * balls5points+balls15points) / cnt) {
+					food_remain--;
+                    balls15points--;
+					board[i][j] = 15; //food
+				}
+                else if (randomNum <= (1.0 * balls5points+balls15points+balls25points) / cnt) {
+					food_remain--;
+                    balls25points--;
+					board[i][j] = 25; //food
+				}
+                 else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
@@ -92,10 +116,23 @@ function Start() {
 			}
 		}
 	}
-	while (food_remain > 0) {
+	while (balls5points > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
-		food_remain--;
+		board[emptyCell[0]][emptyCell[1]] = 5;
+		balls5points--;
+        food_remain--;
+	}
+    while (balls15points > 0) {
+		var emptyCell = findRandomEmptyCell(board);
+		board[emptyCell[0]][emptyCell[1]] = 15;
+		balls15points--;
+        food_remain--;
+	}
+    while (balls25points > 0) {
+		var emptyCell = findRandomEmptyCell(board);
+		board[emptyCell[0]][emptyCell[1]] = 25;
+		balls25points--;
+        food_remain--;
 	}
 	keysDown = {};
 	addEventListener(
@@ -208,9 +245,9 @@ function Draw() {
 			else if (board[i][j] == 2) { // pacmen
 				drawPackman(center);
 			} 
-			else if (board[i][j] == 1) { //food
+			else if (board[i][j] == 5 || board[i][j] == 15 || board[i][j] == 25) { //food
 				if (monstersBoard[i][j] != 1)
-					drawFood(center);
+					drawFood(center, board[i][j]);
 				else
 					drawMonster(center);
 			} 
@@ -238,10 +275,22 @@ function drawPackman(center){
 	context.fill(); //pacmen eye
 }
 
-function drawFood(center){
+function drawFood(center, foodType){
 	context.beginPath();
 	context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-	context.fillStyle = "black"; //color
+    let foodColor;
+    switch (foodType) {
+        case 5:
+            context.fillStyle =fivePointsColor;
+            break;
+        case 15:
+            context.fillStyle = fifteenPointsColor;
+            break;
+        case 25:
+            context.fillStyle = twenyFivePointsColor;
+            break;
+            
+    }
 	context.fill();
 }
 
@@ -283,8 +332,8 @@ function UpdatePosition() {
 			shape.i++;
 		}
 	}
-	if (board[shape.i][shape.j] == 1) {
-		score++;
+	if (board[shape.i][shape.j] == 5 || board[shape.i][shape.j] == 15 || board[shape.i][shape.j] == 25) {
+		score+=board[shape.i][shape.j];
 	}
 	board[shape.i][shape.j] = 2;
 	var currentTime = new Date();
@@ -304,6 +353,7 @@ function updateMonsterPosition(){
 	for (var i=0; i<numberOfMonsters;i++){
 		let movement = calculateMonsterLocation(monsters[i]);
 		setMonsterLocation(monsters[i], movement);
+        
 	}
 }
 
@@ -383,6 +433,24 @@ function setMonsterLocation(monster,movement){
 			break;
 	}
 	monstersBoard[monster.i][monster.j] = 1;
+    checkIfStrike(monster)
+}
+
+function checkIfStrike(monster) {
+    if(monster.i==shape.i && monster.j == shape.j) {
+        strikes--;
+        score-=10;
+        if (strikes ==0)
+            alert("GAME IS OVER!")
+        else {
+            board[shape.i][shape.j]=0
+            addMonsters();
+            pacmanLocation = findRandomEmptyCell(board);
+            shape.i = pacmanLocation[0];
+            shape.j = pacmanLocation[1];
+            board[shape.i][shape.j]=2
+        }
+    }
 }
 
 function getMonsterNeighbours(monster){

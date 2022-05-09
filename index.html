@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="./jquery-3.4.1.slim.min.js"></script>
+        <script src="./jquery-3.4.1.slim.min.js"></script>
+        <script src= "http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+        <script src="jquery.validate.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
-		<!-- <script src="https://jqueryvalidation.org/files/lib/jquery-1.11.1.js"></script> -->
-		<!-- <script src="../dist/jquery.validate.js"></script> -->
+        <script type="text/javascript" src="registrationValidate.js"></script>
+        <script type="text/javascript" src="settingsBackend.js"></script>
 	</head>
 
 	<body>
@@ -26,35 +29,45 @@
 		</div>
 
 		<div id="settingsPage">
-			<form id="settingForm" action="">
-				
-				<label for="">Please Enter Number Of Balls</label>
+			<form id="settingForm" action="" autocomplete="off">
+				<button onclick="settingsGameKeyUp()">Choose Game Up Key: </button>
+                <label id="showUpKey"></label>
+                <br>
+                <button onclick="settingsGameKeyDown()">Choose Game Down Key: </button>
+                <label id="showDownKey"></label>
+                <br>
+                <button onclick="settingsGameKeyLeft()">Choose Game Left Key: </button>
+                <label id="showLeftKey"></label>
+                <br>
+                <button onclick="settingsGameKeyRight()">Choose Game Right Key: </button>
+                <label id="showRightKey"></label>
+                <br>
+				<label for="ballNumbers">Please Enter Number Of Balls</label>
 				<br>
-				<input id="ballNumbers" type="text">
+				<input name="ballNumbers" id="ballNumbers" type="text">
 				<br>
-				<label for="">Please Enter Balls Color</label>
+				<label for="ballColor5">Please Enter 5 Points Ball Color</label>
 				<br>
-				<input id="ballColor" type="text">
+				<input id="ballColor5" name="ballColor5" type="color">
 				<br>
-				<label for="">Please Enter Game Time</label>
+                <label for="ballColor15">Please Enter 15 Points Ball Color</label>
 				<br>
-				<input id="ballColor" type="text">
+				<input id="ballColor15" name="ballColor15" type="color">
 				<br>
-				<label for="">Please Enter Number Of Monsters</label>
+                <label for="ballColor25">Please Enter 25 Points Ball Color</label>
 				<br>
-				<input type="radio" id="1Monster" name="monsterPicker" value="1">
-				<label for="1Monster">1</label>
+				<input id="ballColor25" name="ballColor25" type="color">
 				<br>
-				<input type="radio" id="2Monster" name="monsterPicker" value="2">
-				<label for="2Monster">2</label>
+				<label for="gameTime">Please Enter Game Time</label>
+                <br>
+                <input id="gameTime" name="gameTime" type="text">
 				<br>
-				<input type="radio" id="3Monster" name="monsterPicker" value="3">
-				<label for="3Monster">3</label>
+				<label for="monsterPicker">Please Enter Number Of Monsters, between 1 and 4:</label>
 				<br>
-				<input type="radio" id="4Monster" name="monsterPicker" value="4">
-				<label for="4Monster">4</label>
+				<input type="text" id="monsterPicker" name="monsterPicker">
 				<br>
 				<button onclick="generateRandomSettings()">Random Settings</button>
+                <input type="submit" value="Submit">
 
 				
 			</form>
@@ -93,9 +106,19 @@
 				<canvas id="canvas" height="600" width="600"></canvas>
 			</div>
 		</div>
-		<div id="registrationScreen">
-            <form>
-
+        <div id="registrationScreen">
+            <form id ="registrationForm" autocomplete="off">
+                <label for ="registrationUsername">Username:</label><br>
+                <input type="text" id="registrationUsername" name="registrationUsername"><br>
+                <label for ="registrationPassword">Password:</label><br>
+                <input type="registrationPassword" id="password" name="registrationPassword"><br>
+                <label for ="registrationName">Full name:</label><br>
+                <input type="text" id="registrationName" name="registrationName"><br>
+                <label for ="registrationEmail">Email address:</label><br>
+                <input type="email" id="registrationEmail" name="registrationEmail"><br>
+                <label for ="registrationBirthDate">Birth date:</label><br>
+                <input type="text" id="registrationBirthDate" name="registrationBirthDate"><br><br><br><br><br><br><br><br><br><br><br><br>
+                <input type="submit" value="Submit">
             </form>
         </div>
 		</body>
