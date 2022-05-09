@@ -16,14 +16,14 @@
             <li><a onclick="showOneScreen('welcome')" class="navBar">Welcome</a></li>
            <li><a onclick="showOneScreen('registrationScreen')" class="navBar">Register</a></li>
            <li><a onclick="showOneScreen('loginPage')" class="navBar">Login</a></li>
-           <li><a onclick="showOneScreen('settingsPage')" class="navBar">Settings</a></li>
            <li><a onclick="showOneScreen('play')" class="navBar">About</a></li>
-           <li><a onclick="showOneScreen('gameScreen')" class="navBar">Play</a></li>
+           <li><a onclick="showOneScreen('settingsPage')" class="navBar">Play</a></li>
+           
          </div>
          <br><br><br>
 		<div id="welcome">
-			<button onclick="goToSignInScreen()">Log-in</button>
-			<button onclick="goToRegistrationScreen()">Sign-up</button>
+			<button onclick="showOneScreen('loginPage')">Log-in</button>
+			<button onclick="showOneScreen('registrationScreen')">Sign-up</button>
 		</div>
 
 		<div id="loginPage">
@@ -77,42 +77,61 @@
 				<input type="text" id="monsterPicker" name="monsterPicker">
 				<br>
 				<button onclick="generateRandomSettings();return false">Random Settings</button>
-                <input type="submit" value="Submit" >
-				
+                <input type="submit" value="Submit And Start" >				
 			</form>
 		</div>
-		<!-- <script>
-			$("#settingForm").validate({
-				rules: {
-					name: {
-					required: true,
-					minlength: 2
-					}
-			},
-			messages: {
-				name: {
-				required: "We need your email address to contact you",
-				minlength: jQuery.validator.format("At least {0} characters required!")
-				}
-			}
-			});
-			jQuery.validator.addMethod("ballNumbers", function(value, element) {
-			// allow any non-whitespace characters as the host part
-			return this.optional( element ) || /^[0-9]+$/i.test( value );
-			}, 'Please enter a valid email address.');
-			
-		</script> -->
-		<div id="gameScreen">
-			<div id="score">
-				<label for="lblScore">SCORE:</label>
-				<input id="lblScore" type="text" />
+		<div id="gameScreen" class="parent">
+			<div class="child">
+
+				<div id="score">
+					<label for="lblScore">SCORE:</label>
+					<input id="lblScore" type="text" />
+				</div>
+				<div id="time">
+					<label for="lblTime">TIME:</label>
+					<input id="lblTime" type="text" />
+				</div>
+				<div id="strikes">
+					<label for="lblStrikes">STRIKES:</label>
+					<input id="lblStrikes" type="text" />
+				</div>
 			</div>
-			<div id="time">
-				<label for="lblTime">TIME:</label>
-				<input id="lblTime" type="text" />
-			</div>
-			<div id="game">
+			<div id="game" class="child">
 				<canvas id="canvas" height="600" width="600"></canvas>
+				
+			</div>
+			<div style="flex-grow: 1" id="settingsInGameScreen" class="child">
+				LeftArrowKey: 
+				<label id="LeftArrowGameDisplay">LeftArrowKey</label>
+				<br>
+				RightArrowKey: 
+				<label id="RightArrowGameDisplay">RightArrowKey</label>
+				<br>
+				UpArrowKey: 
+				<label id="UpArrowGameDisplay">UpArrowKey</label>
+				<br>
+				DownArrowKey: 
+				<label id="DownArrowGameDisplay">DownArrowKey</label>
+				<br>
+				NumberOfBalls: 
+				<label id="NumberOfBallsGameDisplay">50</label>
+				<br>
+				FivePointBallCollor: 
+				<label id="FivePointBallCollorGameDisplay">Black</label>
+				<br>
+				FiveTeenPointBallCollor: 
+				<label id="FiveTeenPointBallCollorGameDisplay">Blue</label>
+				<br>
+				TwentyFivePointBallCollor: 
+				<label id="TwentFivePointBallCollorGameDisplay">red</label>
+				<br>
+				GameTime: 
+				<label id="GameTimeGameDisplay">60</label>
+				<br>
+				NumberOfMonsters: 
+				<label id="NumberOfMonstersGameDisplay">2</label>
+				<br>
+				<button onclick="newGame()">New Game</button>
 			</div>
 		</div>
         <div id="registrationScreen">

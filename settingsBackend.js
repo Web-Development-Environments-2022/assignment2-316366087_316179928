@@ -125,5 +125,21 @@ function submitSettingsForm(){
         leftArrow = keyMap["left"];
         rightArrow = keyMap["right"];
         gameTime = gameTimeFromSettings.value;
+        putSettingsAsideCanvase();
+        Start();
+
     }
+}
+
+function putSettingsAsideCanvase(){
+    LeftArrowGameDisplay.innerHTML = leftArrow.toString();
+    RightArrowGameDisplay.innerHTML = rightArrow.toString();
+    UpArrowGameDisplay.innerHTML = upArrow.toString()
+    DownArrowGameDisplay.innerHTML = downArrow.toString()    
+    NumberOfBallsGameDisplay.innerHTML = food_remain.toString()
+    FivePointBallCollorGameDisplay.innerHTML = fivePointsColor.toString();
+    FiveTeenPointBallCollorGameDisplay.innerHTML = fifteenPointsColor.toString();
+    TwentFivePointBallCollorGameDisplay.innerHTML = twenyFivePointsColor.toString();
+    GameTimeGameDisplay.innerHTML = gameTime.toString();
+    NumberOfMonstersGameDisplay.innerHTML = numberOfMonsters.toString();
 }
