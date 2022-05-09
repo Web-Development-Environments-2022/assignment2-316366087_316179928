@@ -8,9 +8,19 @@
 		<script type="text/javascript" src="./app.js"></script>
         <script type="text/javascript" src="registrationValidate.js"></script>
         <script type="text/javascript" src="settingsBackend.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 
 	<body>
+        <div id="menu">
+            <li><a onclick="showOneScreen('welcome')" class="navBar">Welcome</a></li>
+           <li><a onclick="showOneScreen('registrationScreen')" class="navBar">Register</a></li>
+           <li><a onclick="showOneScreen('loginPage')" class="navBar">Login</a></li>
+           <li><a onclick="showOneScreen('settingsPage')" class="navBar">Settings</a></li>
+           <li><a onclick="showOneScreen('play')" class="navBar">About</a></li>
+           <li><a onclick="showOneScreen('gameScreen')" class="navBar">Play</a></li>
+         </div>
+         <br><br><br>
 		<div id="welcome">
 			<button onclick="goToSignInScreen()">Log-in</button>
 			<button onclick="goToRegistrationScreen()">Sign-up</button>
@@ -106,11 +116,11 @@
 			</div>
 		</div>
         <div id="registrationScreen">
-            <form id ="registrationForm" autocomplete="off">
+            <form id ="registrationForm" autocomplete="off" onsubmit="submitRegistrationForm(); return false;   ">
                 <label for ="registrationUsername">Username:</label><br>
                 <input type="text" id="registrationUsername" name="registrationUsername"><br>
                 <label for ="registrationPassword">Password:</label><br>
-                <input type="registrationPassword" id="password" name="registrationPassword"><br>
+                <input type="password" id="registrationPassword" name="registrationPassword"><br>
                 <label for ="registrationName">Full name:</label><br>
                 <input type="text" id="registrationName" name="registrationName"><br>
                 <label for ="registrationEmail">Email address:</label><br>
