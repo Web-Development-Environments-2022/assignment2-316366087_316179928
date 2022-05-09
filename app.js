@@ -11,10 +11,10 @@ var packmanFace;
 var numberOfMonsters;
 var monsters;
 var monstersBoard;
-var strikes;
-var fivePointsColor = "black";
-var fifteenPointsColor = "blue";
-var twenyFivePointsColor = "red";
+var stikes;
+var fivePointsColor;
+var fifteenPointsColor;
+var twenyFivePointsColor;
 var food_remain;
 var keyMap;
 var upArrow = 38;
@@ -23,12 +23,6 @@ var leftArrow = 37;
 var rightArrow = 39;
 var gameTime;
 var isLoggedIn;
-var allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", "gameScreen"];
-var isGameOn = false;
-
-
-const clockImage = new Image();
-clockImage.src = "/photos/packmanClock.JPG";
 
 
 
@@ -37,30 +31,44 @@ $(document).ready(function() {
     isLoggedIn = false;
 	users = {"k":"k"}
 	context = canvas.getContext("2d");
-	showOneScreen("welcome")
+	hideElements();
+	welcome.style.display = "none";
 });
 
+function hideElements(){
+	loginPage.style.display = "none";
+	gameScreen.style.display = "none";
+	// settingsPage.style.display = "none";
+}
 
+function goToRegistrationScreen(){
+	//noneee
+}
 
 
 function authenticate(user,pass){
 	if (user.value in users){
 		if (users[user.value] == pass.value){
+			gameScreen.style.display = "block";
+			loginPage.style.display = "none";
             isLoggedIn = true;
-			showOneScreen("settingsPage");
+			Start();
 		}
 	}
 
 }
 
+function goToSignInScreen(){
+	welcome.style.display = "none";
+	loginPage.style.display = "block";
+}
 
 function Start() {
-	if (isGameOn){
-		return;
-	}
-	showOneScreen("gameScreen");
-	isGameOn = true;
+    fivePointsColor = "black";
+    fifteenPointsColor = "blue";
+    twenyFivePointsColor = "red";
     strikes = 5;
+	numberOfMonsters = 3; /// need to get element from settings
 	monsters = new Array();
 	monstersBoard = new Array();
 	addMonsters();
@@ -69,12 +77,11 @@ function Start() {
 	score = 0;
 	pac_color = "yellow";
 	var cnt = 100;
-	// food_remain = 50;
+	food_remain = 50;
     var balls5points = Math.floor(0.6*food_remain);
     var balls15points = Math.floor(0.3*food_remain);
     var balls25points = Math.floor(0.1*food_remain);
 	var pacman_remain = 1;
-	var clock = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
@@ -104,7 +111,7 @@ function Start() {
                     balls25points--;
 					board[i][j] = 25; //food
 				}
-                 else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt && pacman_remain > 0 ) {
+                 else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
@@ -134,7 +141,6 @@ function Start() {
 		balls25points--;
         food_remain--;
 	}
-	addClock();
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -151,11 +157,6 @@ function Start() {
 		false
 	);
 	interval = setInterval(UpdatePosition, 250);
-}
-
-function addClock(){
-	emptyCell = findRandomEmptyCell(board);
-	board[emptyCell[0]][emptyCell[1]] = "clock";
 }
 
 function addMonsters(){
@@ -238,17 +239,14 @@ function GetKeyPressed() {
 }
 
 function Draw() {
-	// canvas.width = canvas.width; //clean board
-	canvas.height = window.innerHeight*0.75;
-	canvas.width = canvas.height;
+	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
-	lblStrikes.value = strikes;
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
 			var center = new Object();
-			center.x = i * canvas.width/10 + canvas.width/20;
-			center.y = j * canvas.height/10 + canvas.height/20;
+			center.x = i * 60 + 30;
+			center.y = j * 60 + 30;
 			if (monstersBoard[i][j] == 1)
 					drawMonster(center);
 			else if (board[i][j] == 2) { // pacmen
@@ -263,31 +261,22 @@ function Draw() {
 			else if (board[i][j] == 4) { //wall
 				drawWalls(center);
 			}
-			if (board[i][j] == "clock"){				
-				drawClock(center);
-			}
 		}
 	}
 }
 
-function drawClock(center){
-	// context.drawImage(clockImage,0,0,50,50)
-	// alert(center-canvas.height/20)
-	context.drawImage(clockImage,center.x-canvas.height/20,center.y-canvas.height/20,canvas.height/10,canvas.height/10)
-}
-
 function drawPackman(center){
 	context.beginPath();
-	context.arc(center.x, center.y, canvas.height/20, (0.15 + packmanFace) * Math.PI, (1.85 +packmanFace) * Math.PI); // half circle
+	context.arc(center.x, center.y, 30, (0.15 + packmanFace) * Math.PI, (1.85 +packmanFace) * Math.PI); // half circle
 	context.lineTo(center.x, center.y);
 	context.fillStyle = pac_color; //color
 	context.fill(); //pacmen body
 	context.beginPath();
 	if (packmanFace == 1.5){
-		context.arc(center.x - canvas.height/40, center.y + canvas.height/120, canvas.height/120, 0, 2 * Math.PI); // circle
+		context.arc(center.x - 15, center.y + 5, 5, 0, 2 * Math.PI); // circle
 	}
 	else{
-		context.arc(center.x + canvas.height/120, center.y - canvas.height/40, canvas.height/120, 0, 2 * Math.PI); // circle
+		context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
 	}
 	context.fillStyle = "black"; //color
 	context.fill(); //pacmen eye
@@ -295,11 +284,11 @@ function drawPackman(center){
 
 function drawFood(center, foodType){
 	context.beginPath();
-	context.arc(center.x, center.y, canvas.height/40, 0, 2 * Math.PI); // circle
+	context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
     let foodColor;
     switch (foodType) {
         case 5:
-            context.fillStyle = fivePointsColor;
+            context.fillStyle =fivePointsColor;
             break;
         case 15:
             context.fillStyle = fifteenPointsColor;
@@ -314,19 +303,20 @@ function drawFood(center, foodType){
 
 function drawMonster(center){
 	context.beginPath();
-	context.rect(center.x - canvas.height/20, center.y - canvas.height/20, canvas.height/10, canvas.height/10);
+	context.rect(center.x - 30, center.y - 30, 60, 60);
 	context.fillStyle = "purple"; //color
 	context.fill();
 }
 
 function drawWalls(center){
 	context.beginPath();
-	context.rect(center.x - canvas.height/20, center.y - canvas.height/20, canvas.height/10, canvas.height/10);
+	context.rect(center.x - 30, center.y - 30, 60, 60);
 	context.fillStyle = "grey"; //color
 	context.fill();
 }
 
 function UpdatePosition() {
+    
 	updateMonsterPosition();
 	board[shape.i][shape.j] = 0;
 	var x = GetKeyPressed();
@@ -363,9 +353,9 @@ function UpdatePosition() {
 	// 	window.clearInterval(interval);
 	// 	window.alert("Game completed");
 	// } 
-    if (isGameOn)
+    else {
 		Draw();
-	
+	}
 }
 
 function updateMonsterPosition(){
@@ -459,18 +449,8 @@ function checkIfStrike(monster) {
     if(monster.i==shape.i && monster.j == shape.j) {
         strikes--;
         score-=10;
-        if (strikes ==0){
-            // alert("GAME IS OVER!");
-			endGame("Loser!");
-		}
-		else if (gameTime <= time_elapsed){
-			if (score < 100){
-				endGame(`You are better than ${score} points!`)
-			}
-			else{
-				endGame("Winner!!!")
-			}
-		}
+        if (strikes ==0)
+            alert("GAME IS OVER!")
         else {
             board[shape.i][shape.j]=0
             addMonsters();
@@ -482,19 +462,6 @@ function checkIfStrike(monster) {
     }
 }
 
-function endGame(str){
-	isGameOn = false;
-	window.clearInterval(interval);
-	context.beginPath();
-	context.rect(canvas.width/4, canvas.height/4, canvas.height/2, canvas.height/2);
-	context.fillStyle = "rgba(0,0,0,0.4)"; //color
-	context.fill();
-	context.font = "30px Arial";
-	context.fillStyle = "red";
-	context.textAlign = "center";
-	context.fillText(str, canvas.width/2, canvas.height/2);
-	context.strokeText(str, canvas.width/2, canvas.height/2);
-}
 function getMonsterNeighbours(monster){
 	let arr = new Array();
 	let i = monster.i
@@ -511,20 +478,20 @@ function getMonsterNeighbours(monster){
 }
 
 function showOneScreen(screenID) {
-	if(isGameOn){
-		isGameOn = false;
-		clearInterval(interval);
-	}
-	for (index = 0; index < allScreens.length; index++) {
-		if (allScreens[index]==screenID) 
-			document.getElementById(allScreens[index]).style.display= "block";
-		else
-			document.getElementById(allScreens[index]).style.display = "none";
-	}
-}
-
-function newGame(){
-	clearInterval(interval);
-	isGameOn = false;
-	showOneScreen("settingsPage");	
-}
+    if (screenID=="gameScreen") {
+        if (isLoggedIn) {
+            Start();
+        }
+        else {
+            alert("Please log in fist!")
+        }
+    }
+    else {
+        allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", "gameScreen"]
+        for (index = 0; index < allScreens.length; index++) {
+            if (allScreens[index]==screenID) 
+                document.getElementById(allScreens[index]).style.display= "block";
+            else
+                document.getElementById(allScreens[index]).style.display = "none";
+        }
+    }
