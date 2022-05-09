@@ -8,9 +8,19 @@
 		<script type="text/javascript" src="./app.js"></script>
         <script type="text/javascript" src="registrationValidate.js"></script>
         <script type="text/javascript" src="settingsBackend.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 
 	<body>
+        <div id="menu">
+            <li><a onclick="showOneScreen('welcome')" class="navBar">Welcome</a></li>
+           <li><a onclick="showOneScreen('registrationScreen')" class="navBar">Register</a></li>
+           <li><a onclick="showOneScreen('loginPage')" class="navBar">Login</a></li>
+           <li><a onclick="showOneScreen('settingsPage')" class="navBar">Settings</a></li>
+           <li><a onclick="showOneScreen('play')" class="navBar">About</a></li>
+           <li><a onclick="showOneScreen('gameScreen')" class="navBar">Play</a></li>
+         </div>
+         <br><br><br>
 		<div id="welcome">
 			<button onclick="goToSignInScreen()">Log-in</button>
 			<button onclick="goToRegistrationScreen()">Sign-up</button>
@@ -29,7 +39,7 @@
 		</div>
 
 		<div id="settingsPage">
-			<form id="settingForm" autocomplete="off" onsubmit="submitSettingsForm();return false;">
+			<form id="settingForm" action="" autocomplete="off">
 				<button onclick="settingsGameKeyUp()">Choose Game Up Key: </button>
                 <label id="showUpKey"></label>
                 <br>
@@ -60,38 +70,18 @@
 				<br>
 				<label for="gameTime">Please Enter Game Time</label>
                 <br>
-                <input id="gameTimeFromSettings" name="gameTimeFromSettings" type="text">
+                <input id="gameTime" name="gameTime" type="text">
 				<br>
 				<label for="monsterPicker">Please Enter Number Of Monsters, between 1 and 4:</label>
 				<br>
 				<input type="text" id="monsterPicker" name="monsterPicker">
 				<br>
-				<button onclick="generateRandomSettings();return false">Random Settings</button>
-                <input type="submit" value="Submit" >
+				<button onclick="generateRandomSettings()">Random Settings</button>
+                <input type="submit" value="Submit">
+
 				
 			</form>
 		</div>
-		<!-- <script>
-			$("#settingForm").validate({
-				rules: {
-					name: {
-					required: true,
-					minlength: 2
-					}
-			},
-			messages: {
-				name: {
-				required: "We need your email address to contact you",
-				minlength: jQuery.validator.format("At least {0} characters required!")
-				}
-			}
-			});
-			jQuery.validator.addMethod("ballNumbers", function(value, element) {
-			// allow any non-whitespace characters as the host part
-			return this.optional( element ) || /^[0-9]+$/i.test( value );
-			}, 'Please enter a valid email address.');
-			
-		</script> -->
 		<div id="gameScreen">
 			<div id="score">
 				<label for="lblScore">SCORE:</label>
@@ -106,11 +96,11 @@
 			</div>
 		</div>
         <div id="registrationScreen">
-            <form id ="registrationForm" autocomplete="off">
+            <form id ="registrationForm" autocomplete="off" onsubmit="submitRegistrationForm(); return false;   ">
                 <label for ="registrationUsername">Username:</label><br>
                 <input type="text" id="registrationUsername" name="registrationUsername"><br>
                 <label for ="registrationPassword">Password:</label><br>
-                <input type="registrationPassword" id="password" name="registrationPassword"><br>
+                <input type="password" id="registrationPassword" name="registrationPassword"><br>
                 <label for ="registrationName">Full name:</label><br>
                 <input type="text" id="registrationName" name="registrationName"><br>
                 <label for ="registrationEmail">Email address:</label><br>

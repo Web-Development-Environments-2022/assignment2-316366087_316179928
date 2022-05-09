@@ -1,0 +1,34 @@
+#menu
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	width: 100%;
+	height: 4%;
+	background: linear-gradient(rgba(1,1,1,1),rgba(1,1,1,1));
+	opacity: 80%;
+	list-style-type: none;
+	text-align: center;
+	font-size: 19px;
+	padding:8px 15px;
+	z-index: 9999;
+	font-family: "comic sans ms";
+}
+
+#menu :hover{
+	font-size: 25px;
+	background-color: rgb(62, 56, 110,0.3s);
+	transition: 0.5s;
+}
+
+.navBar{
+	position:relative;
+	flex: 1;
+	display: block;
+	float: left;
+	justify-content: center;
+	margin-right: 3%;
+	left: 27.5%;
+	color: #fff;	
+}

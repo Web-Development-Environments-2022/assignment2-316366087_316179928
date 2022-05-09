@@ -17,16 +17,11 @@ var fifteenPointsColor;
 var twenyFivePointsColor;
 var food_remain;
 var keyMap;
-var upArrow = 38;
-var downArrow = 40;
-var leftArrow = 37;
-var rightArrow = 39;
-var gameTime;
-
-
+var isLoggedIn;
 
 $(document).ready(function() {
-    keyMap = {"up":38,"down":40,"left":37,"right":39};
+    isLoggedIn = false;
+    keyMap = {};
 	users = {"k":"k"}
 	context = canvas.getContext("2d");
 	hideElements();
@@ -43,12 +38,16 @@ function goToRegistrationScreen(){
 	//noneee
 }
 
+function generateRandomSettings(){
+	///sdfasdf
+}
 
 function authenticate(user,pass){
 	if (user.value in users){
 		if (users[user.value] == pass.value){
 			gameScreen.style.display = "block";
 			loginPage.style.display = "none";
+            isLoggedIn = true;
 			Start();
 		}
 	}
@@ -217,19 +216,19 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-	if (keysDown[upArrow]) {
+	if (keysDown[38]) {
 		packmanFace = 1.5;
 		return 1; //up
 	}
-	if (keysDown[downArrow]) {
+	if (keysDown[40]) {
 		packmanFace = 0.5;
 		return 2; //down
 	}
-	if (keysDown[leftArrow]) {
+	if (keysDown[37]) {
 		packmanFace = 1;
 		return 3; //left
 	}
-	if (keysDown[rightArrow]) {
+	if (keysDown[39]) {
 		packmanFace = 0;
 		return 4; //right
 	}
@@ -345,10 +344,11 @@ function UpdatePosition() {
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	} else {
+	// if (score == 50) {
+	// 	window.clearInterval(interval);
+	// 	window.alert("Game completed");
+	// } 
+    else {
 		Draw();
 	}
 }
@@ -470,4 +470,24 @@ function getMonsterNeighbours(monster){
 	if ( i-1 >= 0 && monstersBoard[i-1][j] != 4 && monstersBoard[i-1][j] != 1)
 		arr.push("left")	
 	return arr;
+}
+
+function showOneScreen(screenID) {
+    if (screenID=="gameScreen") {
+        if (isLoggedIn) {
+            Start();
+        }
+        else {
+            alert("Please log in fist!")
+        }
+    }
+    else {
+        allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", "gameScreen"]
+        for (index = 0; index < allScreens.length; index++) {
+            if (allScreens[index]==screenID) 
+                document.getElementById(allScreens[index]).style.display= "block";
+            else
+                document.getElementById(allScreens[index]).style.display = "none";
+        }
+    }
 }
