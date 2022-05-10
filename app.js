@@ -28,18 +28,19 @@ var isGameOn = false;
 
 
 var clockImage = new Image();
-clockImage.src = "photos/packmanClock.JPG";
+clockImage.src = "photos/clock2.png";
 var medicineImage = new Image();
-medicineImage.src = "photos/Medicine.png";
+medicineImage.src = "photos/pills.png";
 var monsterImage = new Image()
 monsterImage.src = "photos/monster.png"
-
+var keyMapForGameDisplay;
 
 
 $(document).ready(function() {
     keyMap = {"up":38,"down":40,"left":37,"right":39};
     isLoggedIn = false;
 	users = {"k":"k"}
+    keyMapForGameDisplay = {"Up":"ArrowUp", "Right":"ArrowRight", "Left":"ArrowLeft", "Down":"ArrowDown"}
 	context = canvas.getContext("2d");
 	showOneScreen("welcome")
 });

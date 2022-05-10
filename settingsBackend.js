@@ -53,6 +53,7 @@ function settingsGameKeyUp() {
 
 function chooseGameUpKeyForEvent(event) {
     keyMap["up"] = event.which
+    keyMapForGameDisplay["Up"] = event.code
     document.getElementById('showUpKey').innerHTML=event.code
     window.removeEventListener("keydown", chooseGameUpKeyForEvent);
 }
@@ -63,6 +64,7 @@ function settingsGameKeyDown() {
 
 function chooseGameDownKeyForEvent(event) {
     keyMap["down"] = event.which
+    keyMapForGameDisplay["Down"] = event.code
     document.getElementById('showDownKey').innerHTML=event.code
     window.removeEventListener("keydown", chooseGameDownKeyForEvent);
 }
@@ -73,6 +75,7 @@ function settingsGameKeyLeft() {
 
 function chooseGameLeftKeyForEvent(event) {
     keyMap["left"] = event.which
+    keyMapForGameDisplay["Left"] = event.code
     document.getElementById('showLeftKey').innerHTML=event.code
     window.removeEventListener("keydown", chooseGameLeftKeyForEvent);
 }
@@ -82,7 +85,8 @@ function settingsGameKeyRight() {
 }
 
 function chooseGameRightKeyForEvent(event) {
-    keyMap["right"] = event.which
+    keyMap["right"] = event.whic
+    keyMapForGameDisplay["Right"] = event.code
     document.getElementById('showRightKey').innerHTML=event.code
     window.removeEventListener("keydown", chooseGameRightKeyForEvent);
 }
@@ -132,10 +136,10 @@ function submitSettingsForm(){
 }
 
 function putSettingsAsideCanvase(){
-    LeftArrowGameDisplay.innerHTML = leftArrow.toString();
-    RightArrowGameDisplay.innerHTML = rightArrow.toString();
-    UpArrowGameDisplay.innerHTML = upArrow.toString()
-    DownArrowGameDisplay.innerHTML = downArrow.toString()    
+    LeftArrowGameDisplay.innerHTML = keyMapForGameDisplay["Left"]
+    RightArrowGameDisplay.innerHTML = keyMapForGameDisplay["Right"]
+    UpArrowGameDisplay.innerHTML = keyMapForGameDisplay["Up"]
+    DownArrowGameDisplay.innerHTML = keyMapForGameDisplay["Down"]
     NumberOfBallsGameDisplay.innerHTML = food_remain.toString()
     FivePointBallCollorGameDisplay.innerHTML = fivePointsColor.toString();
     FiveTeenPointBallCollorGameDisplay.innerHTML = fifteenPointsColor.toString();
