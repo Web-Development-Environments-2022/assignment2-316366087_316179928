@@ -1,3 +1,4 @@
+var loggedInUser = null;
 
 $(document).ready(function() {
     jQuery.validator.addMethod( "userNameExists", function( value, element ) {
