@@ -23,35 +23,33 @@ var leftArrow = 37;
 var rightArrow = 39;
 var gameTime;
 var isLoggedIn;
-var allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", "gameScreen"];
+var allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", "gameScreen","alreadyLoggedIn"];
 var isGameOn = false;
 
 
 var clockImage = new Image();
+<<<<<<< HEAD
 clockImage.src = "photos/packmanClock.JPG";
 
+=======
+clockImage.src = "photos/clock2.png";
+var medicineImage = new Image();
+medicineImage.src = "photos/pills.png";
+var monsterImage = new Image()
+monsterImage.src = "photos/monster.png"
+var keyMapForGameDisplay;
+>>>>>>> dcfcc66db46b640d72be624b49339e5ebd880590
 
 
 $(document).ready(function() {
     keyMap = {"up":38,"down":40,"left":37,"right":39};
     isLoggedIn = false;
 	users = {"k":"k"}
+    keyMapForGameDisplay = {"Up":"ArrowUp", "Right":"ArrowRight", "Left":"ArrowLeft", "Down":"ArrowDown"}
 	context = canvas.getContext("2d");
 	showOneScreen("welcome")
 });
 
-
-
-
-function authenticate(user,pass){
-	if (user.value in users){
-		if (users[user.value] == pass.value){
-            isLoggedIn = true;
-			showOneScreen("settingsPage");
-		}
-	}
-
-}
 
 
 function Start() {
@@ -135,6 +133,7 @@ function Start() {
         food_remain--;
 	}
 	addClock();
+    addMedicine();
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -156,6 +155,13 @@ function Start() {
 function addClock(){
 	emptyCell = findRandomEmptyCell(board);
 	board[emptyCell[0]][emptyCell[1]] = "clock";
+}
+
+function addMedicine(){
+    for (let i=0; i<2; i++) {
+        emptyCell = findRandomEmptyCell(board);
+        board[emptyCell[0]][emptyCell[1]] = "medicine";
+    }
 }
 
 function addMonsters(){
@@ -242,7 +248,7 @@ function Draw() {
 	canvas.height = window.innerHeight*0.75;
 	canvas.width = canvas.height;
 	lblScore.value = score;
-	lblTime.value = time_elapsed;
+	lblTime.value = gameTime - time_elapsed;
 	lblStrikes.value = strikes;
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
@@ -250,7 +256,7 @@ function Draw() {
 			center.x = i * canvas.width/10 + canvas.width/20;
 			center.y = j * canvas.height/10 + canvas.height/20;
 			if (monstersBoard[i][j] == 1)
-					drawMonster(center);
+					drawImage(center, "monster");
 			else if (board[i][j] == 2) { // pacmen
 				drawPackman(center);
 			} 
@@ -258,22 +264,27 @@ function Draw() {
 				if (monstersBoard[i][j] != 1)
 					drawFood(center, board[i][j]);
 				else
-					drawMonster(center);
+                    drawImage(center, "monster");
 			} 
 			else if (board[i][j] == 4) { //wall
 				drawWalls(center);
 			}
-			if (board[i][j] == "clock"){				
-				drawClock(center);
+			else if (board[i][j] == "clock" || board[i][j] == "medicine"){				
+				drawImage(center, board[i][j]);
 			}
 		}
 	}
 }
 
-function drawClock(center){
-	// context.drawImage(clockImage,0,0,50,50)
-	// alert(center-canvas.height/20)
-	context.drawImage(clockImage,center.x-canvas.height/20,center.y-canvas.height/20,canvas.height/10,canvas.height/10)
+function drawImage(center, imageName){
+    let drawingImage;
+    if (imageName=="clock")
+        drawingImage = clockImage
+    else if (imageName == "medicine")
+        drawingImage = medicineImage
+    else
+        drawingImage = monsterImage
+	context.drawImage(drawingImage,center.x-canvas.height/20,center.y-canvas.height/20,canvas.height/10,canvas.height/10)
 }
 
 function drawPackman(center){
@@ -327,7 +338,6 @@ function drawWalls(center){
 }
 
 function UpdatePosition() {
-	updateMonsterPosition();
 	board[shape.i][shape.j] = 0;
 	var x = GetKeyPressed();
 	if (x == 1) { //up
@@ -353,9 +363,20 @@ function UpdatePosition() {
 	if (board[shape.i][shape.j] == 5 || board[shape.i][shape.j] == 15 || board[shape.i][shape.j] == 25) {
 		score+=board[shape.i][shape.j];
 	}
+    if (board[shape.i][shape.j] == "clock") {
+        gameTime=gameTime + 100
+    }
+    else if (board[shape.i][shape.j] == "medicine") {
+        strikes+=1
+    }
 	board[shape.i][shape.j] = 2;
+    for (let i=0;i<monsters.length;i++) {
+        checkIfStrike(monsters[i])
+    }
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000;
+    if (checkTime())
+        return;
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
@@ -363,9 +384,23 @@ function UpdatePosition() {
 	// 	window.clearInterval(interval);
 	// 	window.alert("Game completed");
 	// } 
+    updateMonsterPosition();
     if (isGameOn)
 		Draw();
 	
+}
+
+function checkTime() {
+    if (gameTime <= time_elapsed){
+        if (score < 100){
+            endGame(`You are better than ${score} points!`)
+        }
+        else{
+            endGame("Winner!!!")
+        }
+        return true;
+    }
+    return false;
 }
 
 function updateMonsterPosition(){
@@ -408,7 +443,7 @@ function tryEatPackmanHorizontaly(monster, i, j, neighbours){
 		movment = "up";
 	}
 	else{
-		movment = neighbours[Math.floor(Math.random() * neighbours.length)];
+		movment = neighbours[0];
 	}
 	return movment;
 }
@@ -429,7 +464,7 @@ function tryEatPackmanVerticaly(monster, i, j, neighbours){
 		movment = "left";
 	}
 	else{
-		movment = neighbours[Math.floor(Math.random() * neighbours.length)];
+		movment = neighbours[0];
 	}
 	return movment;
 }
@@ -463,14 +498,6 @@ function checkIfStrike(monster) {
             // alert("GAME IS OVER!");
 			endGame("Loser!");
 		}
-		else if (gameTime <= time_elapsed){
-			if (score < 100){
-				endGame(`You are better than ${score} points!`)
-			}
-			else{
-				endGame("Winner!!!")
-			}
-		}
         else {
             board[shape.i][shape.j]=0
             addMonsters();
@@ -483,6 +510,7 @@ function checkIfStrike(monster) {
 }
 
 function endGame(str){
+    Draw()
 	isGameOn = false;
 	window.clearInterval(interval);
 	context.beginPath();
@@ -511,10 +539,18 @@ function getMonsterNeighbours(monster){
 }
 
 function showOneScreen(screenID) {
+    if (screenID=="settingsPage" && !isLoggedIn) {
+        alert("Please log-in first!")
+        return;
+    }
 	if(isGameOn){
 		isGameOn = false;
 		clearInterval(interval);
 	}
+    if (isLoggedIn && screenID=="loginPage") {
+        screenID="alreadyLoggedIn"
+        document.getElementById("loggedInAs").innerHTML=loggedInUser
+    }
 	for (index = 0; index < allScreens.length; index++) {
 		if (allScreens[index]==screenID) 
 			document.getElementById(allScreens[index]).style.display= "block";

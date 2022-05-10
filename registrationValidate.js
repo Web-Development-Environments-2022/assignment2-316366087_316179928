@@ -62,5 +62,7 @@ function submitRegistrationForm() {
     if ($("#registrationForm").valid()) {
         users[document.getElementById("registrationUsername").value]=document.getElementById("registrationPassword").value
         document.getElementById("registrationForm").reset();
+        alert("Successful registration!")
+        showOneScreen("loginPage")
     }
 }

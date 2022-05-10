@@ -7,11 +7,15 @@
         <script src="jquery.validate.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
         <script type="text/javascript" src="registrationValidate.js"></script>
+        <script type="text/javascript" src="loginValidate.js"></script>
         <script type="text/javascript" src="settingsBackend.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+         
 	</head>
-
 	<body>
+<<<<<<< HEAD
         <div id="menu">
         	<li><a onclick="showOneScreen('welcome')" class="navBar">Welcome</a></li>
            <li><a onclick="showOneScreen('registrationScreen')" class="navBar">Register</a></li>
@@ -21,35 +25,55 @@
            
          </div>
          <br><br><br>
+=======
+        <div id="aboutModal" class="modal">
+            <p>Thanks for clicking. That felt good.</p>
+        </div>      
+        <header>
+            <div id="header">
+                <img src="photos/logoPicture.png" height="50">
+                <img src="photos/logo.png" height="50">
+            </div>
+            <div id="menu">
+                <li><a onclick="showOneScreen('welcome')" class="navBar">Welcome</a></li>
+               <li><a onclick="showOneScreen('registrationScreen')" class="navBar">Register</a></li>
+               <li><a onclick="showOneScreen('loginPage')" class="navBar">Login</a></li>
+               <li><a href="#aboutModal" rel="modal:open" class="navBar">About</a></li>
+               <li><a onclick="showOneScreen('settingsPage')" class="navBar">Play</a></li>
+             </div>
+        </header>
+         <br><br><br><br><br><br>
+>>>>>>> dcfcc66db46b640d72be624b49339e5ebd880590
 		<div id="welcome">
-			<button onclick="showOneScreen('loginPage')">Log-in</button>
-			<button onclick="showOneScreen('registrationScreen')">Sign-up</button>
+			<button onclick="showOneScreen('loginPage')" class="welcomeButton">Log-in</button>
+			<button onclick="showOneScreen('registrationScreen')" class="welcomeButton">Sign-up</button>
 		</div>
-
 		<div id="loginPage">
-			<label for="userName">Please Enter User Name:</label>
-			<br>
-			<input name="userName" id="userNameLogin" cols="30" rows="10"></input>
-			<br>
-			<label for="password">Please Enter Password:</label>
-			<br>
-			<input type="password" name="password" id="passwordLogin" cols="30" rows="10"></input>
-			<br>
-			<button onclick="authenticate(userNameLogin,passwordLogin)">Log-in</button>
+            <form id = "loginForm" autocomplete="off" onsubmit="authenticate(userNameLogin,passwordLogin); return false;">
+                <label for="userNameLogin">Please Enter User Name:</label>
+                <br>
+                <input type="text" name="userNameLogin" id="userNameLogin" cols="30" rows="10"></input>
+                <br>
+                <label for="passwordLogin">Please Enter Password:</label>
+                <br>
+                <input type="password" name="passwordLogin" id="passwordLogin" cols="30" rows="10"></input>
+                <br>
+                <input type="submit" value="Log-in">
+            </form>
 		</div>
 
 		<div id="settingsPage">
 			<form id="settingForm" autocomplete="off" onsubmit="submitSettingsForm();return false;">
-				<button onclick="settingsGameKeyUp()">Choose Game Up Key: </button>
+				<button onclick="settingsGameKeyUp(); return false;">Choose Game Up Key: </button>
                 <label id="showUpKey"></label>
                 <br>
-                <button onclick="settingsGameKeyDown()">Choose Game Down Key: </button>
+                <button onclick="settingsGameKeyDown(); return false;">Choose Game Down Key: </button>
                 <label id="showDownKey"></label>
                 <br>
-                <button onclick="settingsGameKeyLeft()">Choose Game Left Key: </button>
+                <button onclick="settingsGameKeyLeft(); return false;">Choose Game Left Key: </button>
                 <label id="showLeftKey"></label>
                 <br>
-                <button onclick="settingsGameKeyRight()">Choose Game Right Key: </button>
+                <button onclick="settingsGameKeyRight(); return false;">Choose Game Right Key: </button>
                 <label id="showRightKey"></label>
                 <br>
 				<label for="ballNumbers">Please Enter Number Of Balls</label>
@@ -77,7 +101,7 @@
 				<input type="text" id="monsterPicker" name="monsterPicker">
 				<br>
 				<button onclick="generateRandomSettings();return false">Random Settings</button>
-                <input type="submit" value="Submit And Start" >				
+                <input type="submit" value="Submit And Start" class="submitButtom">				
 			</form>
 		</div>
 		<div id="gameScreen" class="parent">
@@ -146,8 +170,14 @@
                 <input type="email" id="registrationEmail" name="registrationEmail"><br>
                 <label for ="registrationBirthDate">Birth date:</label><br>
                 <input type="text" id="registrationBirthDate" name="registrationBirthDate"><br><br><br><br><br><br><br><br><br><br><br><br>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submitButton">
             </form>
         </div>
+        <div id="alreadyLoggedIn">
+            You are logged in as <label id="loggedInAs"></label>
+        </div>
+        <footer>
+            <img src="photos/logo.png" height="40">
+        </footer>
 		</body>
 </html>
