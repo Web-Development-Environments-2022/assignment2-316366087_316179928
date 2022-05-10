@@ -124,7 +124,7 @@ function submitSettingsForm(){
         downArrow = keyMap["down"];
         leftArrow = keyMap["left"];
         rightArrow = keyMap["right"];
-        gameTime = gameTimeFromSettings.value;
+        gameTime = parseInt(gameTimeFromSettings.value);
         putSettingsAsideCanvase();
         Start();
 
