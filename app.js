@@ -27,8 +27,8 @@ var allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", 
 var isGameOn = false;
 
 
-const clockImage = new Image();
-clockImage.src = "/photos/packmanClock.JPG";
+var clockImage = new Image();
+clockImage.src = "photos/packmanClock.JPG";
 
 
 
