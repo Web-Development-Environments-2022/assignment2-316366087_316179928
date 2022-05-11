@@ -28,17 +28,12 @@ var isGameOn = false;
 
 
 var clockImage = new Image();
-<<<<<<< HEAD
-clockImage.src = "photos/packmanClock.JPG";
-
-=======
 clockImage.src = "photos/clock2.png";
 var medicineImage = new Image();
 medicineImage.src = "photos/pills.png";
 var monsterImage = new Image()
 monsterImage.src = "photos/monster.png"
 var keyMapForGameDisplay;
->>>>>>> dcfcc66db46b640d72be624b49339e5ebd880590
 
 
 $(document).ready(function() {
