@@ -37,6 +37,7 @@ function authenticate(user,pass){
     if ($("#loginForm").valid()) {
 	        isLoggedIn = true;
             loggedInUser = user.value;
+            gameUserName.innerHTML = user.value;
             alert("Successful log-in!")
 			showOneScreen("settingsPage");
 	}

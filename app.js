@@ -25,7 +25,8 @@ var gameTime;
 var isLoggedIn;
 var allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", "gameScreen","alreadyLoggedIn"];
 var isGameOn = false;
-
+var turnCounter
+var movingScore;
 
 var clockImage = new Image();
 clockImage.src = "photos/clock2.png";
@@ -33,6 +34,8 @@ var medicineImage = new Image();
 medicineImage.src = "photos/pills.png";
 var monsterImage = new Image()
 monsterImage.src = "photos/monster.png"
+var movingScoreImage = new Image()
+movingScoreImage.src = "photos/bird.png"
 var keyMapForGameDisplay;
 
 
@@ -51,9 +54,13 @@ function Start() {
 	if (isGameOn){
 		return;
 	}
+    let audio = document.getElementById("audio");
+    audio.play();
 	showOneScreen("gameScreen");
 	isGameOn = true;
     strikes = 5;
+    turnCounter = 0;
+    movingScore = new Object();
 	monsters = new Array();
 	monstersBoard = new Array();
 	addMonsters();
@@ -129,6 +136,7 @@ function Start() {
 	}
 	addClock();
     addMedicine();
+    addMovingScore();
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -159,6 +167,19 @@ function addMedicine(){
     }
 }
 
+function addMovingScore() {
+    while(true) {
+        let i = Math.floor(Math.random() * 9 + 1);
+        let j = Math.floor(Math.random() * 9 + 1);
+        if (board[i][j]!=4 && board[i][j]!=2 && monstersBoard[i][j]!=1) {
+            movingScore.i=i
+            movingScore.j=j
+            monstersBoard[i][j] = "movingScore"
+            break;
+        }
+    }
+}
+
 function addMonsters(){
 	initiateMonstersBoard();
 	for (var i = 0; i<numberOfMonsters; i++){
@@ -186,6 +207,7 @@ function addMonsters(){
 				break;
 			
 		}
+        monsters[i].lastMove="noMove"
 	}
 	
 }
@@ -238,100 +260,6 @@ function GetKeyPressed() {
 	}
 }
 
-function Draw() {
-	// canvas.width = canvas.width; //clean board
-	canvas.height = window.innerHeight*0.75;
-	canvas.width = canvas.height;
-	lblScore.value = score;
-	lblTime.value = gameTime - time_elapsed;
-	lblStrikes.value = strikes;
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
-			var center = new Object();
-			center.x = i * canvas.width/10 + canvas.width/20;
-			center.y = j * canvas.height/10 + canvas.height/20;
-			if (monstersBoard[i][j] == 1)
-					drawImage(center, "monster");
-			else if (board[i][j] == 2) { // pacmen
-				drawPackman(center);
-			} 
-			else if (board[i][j] == 5 || board[i][j] == 15 || board[i][j] == 25) { //food
-				if (monstersBoard[i][j] != 1)
-					drawFood(center, board[i][j]);
-				else
-                    drawImage(center, "monster");
-			} 
-			else if (board[i][j] == 4) { //wall
-				drawWalls(center);
-			}
-			else if (board[i][j] == "clock" || board[i][j] == "medicine"){				
-				drawImage(center, board[i][j]);
-			}
-		}
-	}
-}
-
-function drawImage(center, imageName){
-    let drawingImage;
-    if (imageName=="clock")
-        drawingImage = clockImage
-    else if (imageName == "medicine")
-        drawingImage = medicineImage
-    else
-        drawingImage = monsterImage
-	context.drawImage(drawingImage,center.x-canvas.height/20,center.y-canvas.height/20,canvas.height/10,canvas.height/10)
-}
-
-function drawPackman(center){
-	context.beginPath();
-	context.arc(center.x, center.y, canvas.height/20, (0.15 + packmanFace) * Math.PI, (1.85 +packmanFace) * Math.PI); // half circle
-	context.lineTo(center.x, center.y);
-	context.fillStyle = pac_color; //color
-	context.fill(); //pacmen body
-	context.beginPath();
-	if (packmanFace == 1.5){
-		context.arc(center.x - canvas.height/40, center.y + canvas.height/120, canvas.height/120, 0, 2 * Math.PI); // circle
-	}
-	else{
-		context.arc(center.x + canvas.height/120, center.y - canvas.height/40, canvas.height/120, 0, 2 * Math.PI); // circle
-	}
-	context.fillStyle = "black"; //color
-	context.fill(); //pacmen eye
-}
-
-function drawFood(center, foodType){
-	context.beginPath();
-	context.arc(center.x, center.y, canvas.height/40, 0, 2 * Math.PI); // circle
-    let foodColor;
-    switch (foodType) {
-        case 5:
-            context.fillStyle = fivePointsColor;
-            break;
-        case 15:
-            context.fillStyle = fifteenPointsColor;
-            break;
-        case 25:
-            context.fillStyle = twenyFivePointsColor;
-            break;
-            
-    }
-	context.fill();
-}
-
-function drawMonster(center){
-	context.beginPath();
-	context.rect(center.x - canvas.height/20, center.y - canvas.height/20, canvas.height/10, canvas.height/10);
-	context.fillStyle = "purple"; //color
-	context.fill();
-}
-
-function drawWalls(center){
-	context.beginPath();
-	context.rect(center.x - canvas.height/20, center.y - canvas.height/20, canvas.height/10, canvas.height/10);
-	context.fillStyle = "grey"; //color
-	context.fill();
-}
-
 function UpdatePosition() {
 	board[shape.i][shape.j] = 0;
 	var x = GetKeyPressed();
@@ -364,6 +292,12 @@ function UpdatePosition() {
     else if (board[shape.i][shape.j] == "medicine") {
         strikes+=1
     }
+    if (monstersBoard[shape.i][shape.j] == "movingScore") {
+        score+=50
+        monstersBoard[shape.i][shape.j] = 0
+        movingScore = null;
+
+    }
 	board[shape.i][shape.j] = 2;
     for (let i=0;i<monsters.length;i++) {
         checkIfStrike(monsters[i])
@@ -379,7 +313,11 @@ function UpdatePosition() {
 	// 	window.clearInterval(interval);
 	// 	window.alert("Game completed");
 	// } 
-    updateMonsterPosition();
+    if (movingScore!=null)
+        updateMovingScore();
+    if (turnCounter%2==0)
+        updateMonsterPosition();
+    turnCounter+=1
     if (isGameOn)
 		Draw();
 	
@@ -398,115 +336,11 @@ function checkTime() {
     return false;
 }
 
-function updateMonsterPosition(){
-	for (var i=0; i<numberOfMonsters;i++){
-		let movement = calculateMonsterLocation(monsters[i]);
-		setMonsterLocation(monsters[i], movement);
-        
-	}
-}
-
-function calculateMonsterLocation(monster){
-	let i = shape.i - monster.i;
-	let j = shape.j - monster.j;
-	let neighbours = getMonsterNeighbours(monster);
-	let movement;
-	if (Math.abs(i) < Math.abs(j)){
-		movement = tryEatPackmanHorizontaly(monster, i, j, neighbours);
-	}
-	else{
-		movement = tryEatPackmanVerticaly(monster, i, j, neighbours);
-	}
-		
-	
-	
-	return movement;
-}
-
-function tryEatPackmanHorizontaly(monster, i, j, neighbours){
-	let movment;
-	if (i > 0 && neighbours.includes("right")){
-		movment = "right";
-	}
-	else if (i < 0 && neighbours.includes("left")){
-		movment = "left";
-	}
-	else if (j > 0 && neighbours.includes("down")){
-		movment = "down";
-	}
-	else if (j < 0 && neighbours.includes("up")){
-		movment = "up";
-	}
-	else{
-		movment = neighbours[0];
-	}
-	return movment;
-}
-
-
-function tryEatPackmanVerticaly(monster, i, j, neighbours){
-	let movment;
-	if (j > 0 && neighbours.includes("down")){
-		movment = "down";
-	}
-	else if (j < 0 && neighbours.includes("up")){
-		movment = "up";
-	}
-	else if (i > 0 && neighbours.includes("right")){
-		movment = "right";
-	}
-	else if (i < 0 && neighbours.includes("left")){
-		movment = "left";
-	}
-	else{
-		movment = neighbours[0];
-	}
-	return movment;
-}
-
-
-function setMonsterLocation(monster,movement){
-	monstersBoard[monster.i][monster.j] = 0;
-	switch (movement){
-		case "left":
-			monster.i = monster.i - 1;
-			break;
-		case "right":
-			monster.i = monster.i + 1;
-			break;
-		case "up":
-			monster.j = monster.j - 1;
-			break;
-		case "down":
-			monster.j = monster.j + 1;
-			break;
-	}
-	monstersBoard[monster.i][monster.j] = 1;
-    checkIfStrike(monster)
-}
-
-function checkIfStrike(monster) {
-    if(monster.i==shape.i && monster.j == shape.j) {
-        strikes--;
-        score-=10;
-        if (strikes ==0){
-            // alert("GAME IS OVER!");
-			endGame("Loser!");
-		}
-        else {
-            board[shape.i][shape.j]=0
-            addMonsters();
-            pacmanLocation = findRandomEmptyCell(board);
-            shape.i = pacmanLocation[0];
-            shape.j = pacmanLocation[1];
-            board[shape.i][shape.j]=2
-        }
-    }
-}
-
 function endGame(str){
     Draw()
 	isGameOn = false;
+    audio.pause();
+    audio.currentTime = 0;
 	window.clearInterval(interval);
 	context.beginPath();
 	context.rect(canvas.width/4, canvas.height/4, canvas.height/2, canvas.height/2);
@@ -518,20 +352,7 @@ function endGame(str){
 	context.fillText(str, canvas.width/2, canvas.height/2);
 	context.strokeText(str, canvas.width/2, canvas.height/2);
 }
-function getMonsterNeighbours(monster){
-	let arr = new Array();
-	let i = monster.i
-	let j = monster.j
-	if ( i+1 <= 9 && monstersBoard[i+1][j] !=4 && monstersBoard[i+1][j] != 1)
-		arr.push("right") 
-	if ( j+1 <= 9 && monstersBoard[i][j+1] != 4 && monstersBoard[i][j+1] != 1)
-		arr.push("down")	
-	if ( j-1 >= 0 && monstersBoard[i][j-1] != 4 && monstersBoard[i][j-1] != 1)
-		arr.push("up")	
-	if ( i-1 >= 0 && monstersBoard[i-1][j] != 4 && monstersBoard[i-1][j] != 1)
-		arr.push("left")	
-	return arr;
-}
+
 
 function showOneScreen(screenID) {
     if (screenID=="settingsPage" && !isLoggedIn) {
@@ -539,6 +360,8 @@ function showOneScreen(screenID) {
         return;
     }
 	if(isGameOn){
+        audio.pause();
+        audio.currentTime = 0;
 		isGameOn = false;
 		clearInterval(interval);
 	}
@@ -555,6 +378,8 @@ function showOneScreen(screenID) {
 }
 
 function newGame(){
+    audio.pause();
+    audio.currentTime = 0;
 	clearInterval(interval);
 	isGameOn = false;
 	showOneScreen("settingsPage");	
