@@ -27,17 +27,8 @@ var allScreens = ["welcome", "registrationScreen", "loginPage", "settingsPage", 
 var isGameOn = false;
 var turnCounter
 var movingScore;
-
-var clockImage = new Image();
-clockImage.src = "photos/clock2.png";
-var medicineImage = new Image();
-medicineImage.src = "photos/pills.png";
-var monsterImage = new Image()
-monsterImage.src = "photos/monster.png"
-var movingScoreImage = new Image()
-movingScoreImage.src = "photos/bird.png"
+var blockMonsters;
 var keyMapForGameDisplay;
-
 
 $(document).ready(function() {
     keyMap = {"up":38,"down":40,"left":37,"right":39};
@@ -58,6 +49,7 @@ function Start() {
     audio.play();
 	showOneScreen("gameScreen");
 	isGameOn = true;
+    blockMonsters = 0;
     strikes = 5;
     turnCounter = 0;
     movingScore = new Object();
@@ -136,6 +128,7 @@ function Start() {
 	}
 	addClock();
     addMedicine();
+    addIce();
     addMovingScore();
 	keysDown = {};
 	addEventListener(
@@ -165,6 +158,11 @@ function addMedicine(){
         emptyCell = findRandomEmptyCell(board);
         board[emptyCell[0]][emptyCell[1]] = "medicine";
     }
+}
+
+function addIce(){
+    emptyCell = findRandomEmptyCell(board);
+    board[emptyCell[0]][emptyCell[1]] = "ice";
 }
 
 function addMovingScore() {
@@ -292,6 +290,9 @@ function UpdatePosition() {
     else if (board[shape.i][shape.j] == "medicine") {
         strikes+=1
     }
+    else if (board[shape.i][shape.j] == "ice") {
+        blockMonsters=10
+    }
     if (monstersBoard[shape.i][shape.j] == "movingScore") {
         score+=50
         monstersBoard[shape.i][shape.j] = 0
@@ -315,7 +316,9 @@ function UpdatePosition() {
 	// } 
     if (movingScore!=null)
         updateMovingScore();
-    if (turnCounter%2==0)
+    if (blockMonsters>0)
+        blockMonsters--;
+    else if (turnCounter%2==0)
         updateMonsterPosition();
     turnCounter+=1
     if (isGameOn)

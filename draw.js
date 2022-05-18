@@ -1,3 +1,13 @@
+var clockImage = new Image();
+clockImage.src = "photos/clock2.png";
+var medicineImage = new Image();
+medicineImage.src = "photos/pills.png";
+var monsterImage = new Image()
+monsterImage.src = "photos/monster.png"
+var movingScoreImage = new Image()
+movingScoreImage.src = "photos/bird.png"
+var iceImage = new Image()
+iceImage.src = "photos/ice.png"
 
 function Draw() {
 	// canvas.width = canvas.width; //clean board
@@ -27,7 +37,7 @@ function Draw() {
 			else if (board[i][j] == 4) { //wall
 				drawWalls(center);
 			}
-			else if (board[i][j] == "clock" || board[i][j] == "medicine"){				
+			else if (board[i][j] == "clock" || board[i][j] == "medicine" || board[i][j] == "ice"){				
 				drawImage(center, board[i][j]);
 			}
 		}
@@ -42,6 +52,8 @@ function drawImage(center, imageName){
         drawingImage = medicineImage
     else if (imageName == "monster")
         drawingImage = monsterImage
+    else if (imageName == "ice")
+        drawingImage = iceImage
     else
         drawingImage = movingScoreImage
 	context.drawImage(drawingImage,center.x-canvas.height/20,center.y-canvas.height/20,canvas.height/10,canvas.height/10)
