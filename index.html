@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="html">
 	<head>
         <script src="./jquery-3.4.1.slim.min.js"></script>
         <script src= "http://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
          
 	</head>
-	<body>
+	<body id="body">
         <div id="aboutModal" class="modal">
 			<u>About</u>
             <p>We used jquery for validation and to acces variables</p>
@@ -39,7 +39,7 @@
                <li><a onclick="showOneScreen('settingsPage')" class="navBar">Play</a></li>
              </div>
         </header>
-         <br><br><br><br><br><br>
+         <br><br><br><br><br>
 		<div id="welcome">
 			<button onclick="showOneScreen('loginPage')" class="welcomeButton">Log-in</button>
 			<button onclick="showOneScreen('registrationScreen')" class="welcomeButton">Sign-up</button>
@@ -175,6 +175,7 @@
         <div id="alreadyLoggedIn">
             You are logged in as <label id="loggedInAs"></label>
         </div>
+		<br><br>
         <footer>
             <img src="photos/logo.png" height="40">
 			<a id="wirteNice" href="mailto:Eitanche@post.bgu.ac.il, Ehudmal@post.bgu.ac.il">Contact Us</a>

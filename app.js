@@ -368,6 +368,14 @@ function showOneScreen(screenID) {
 		isGameOn = false;
 		clearInterval(interval);
 	}
+	if (screenID == "gameScreen"){
+		document.getElementById("html").style.position = "fixed";
+		document.getElementById("body").style.position = "fixed";
+	}
+	else{
+		document.getElementById("html").style.position = "static";
+		document.getElementById("body").style.position = "static";
+	}
     if (isLoggedIn && screenID=="loginPage") {
         screenID="alreadyLoggedIn"
         document.getElementById("loggedInAs").innerHTML=loggedInUser

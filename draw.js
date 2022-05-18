@@ -11,7 +11,12 @@ iceImage.src = "photos/ice.png"
 
 function Draw() {
 	// canvas.width = canvas.width; //clean board
-	canvas.height = window.innerHeight*0.75;
+	if (window.innerHeight > 800){
+		canvas.height = window.innerHeight*0.75;
+	}
+	else{
+		canvas.height = window.innerHeight*0.65;
+	}
 	canvas.width = canvas.height;
 	lblScore.value = score;
 	lblTime.value = gameTime - time_elapsed;
